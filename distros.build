@@ -1,0 +1,5 @@
+debian/debian-11.2-amd64
+fedora/fedora-34-x86_64
+freebsd/freebsd-13.0-amd64
+ubuntu/ubuntu-20.04-arm64
+rockylinux/rockylinux-8.5-x86_64
