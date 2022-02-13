@@ -6,7 +6,7 @@ $PROVIDER = 'virtualbox'
 $PROVIDER_NAME = "${PROVIDER}-iso"
 $HEADLESS = 'false'
 
-foreach ($DISTRO_PATH in (cat .\distros.build)) {
+foreach ($DISTRO_PATH in (cat .\distros.build | grep -v '#')) {
     try {
         cd $CWD
 
