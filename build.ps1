@@ -38,7 +38,7 @@ foreach ($DISTRO_PATH in (cat .\distros.build | grep -v '#')) {
             -var build_directory=./builds `
             packer_templates/${DISTRO_FILE}.json
 
-        vagrant cloud publish giflw/$DISTRO "${VERSION}.${BUILD}" ${PROVIDER_NAME} `
+        vagrant cloud publish giflw/$DISTRO "${VERSION}.${BUILD}" ${PROVIDER} `
             ./builds/${DISTRO_VERSION}.${PROVIDER}.box `
             --force `
             --checksum "$(sha512sum ./builds/${DISTRO_VERSION}.${PROVIDER}.box | awk '{print $1}')" `
