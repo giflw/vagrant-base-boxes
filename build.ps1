@@ -3,10 +3,12 @@
 $CWD = (Get-Location)
 $BUILD = (date --utc +%Y%m%d%H%M)
 $PROVIDER = 'virtualbox'
-$PROVIDER_NAME = "${PROVIDER}-iso"
+$PROVIDER_NAME = "${PROVIDER}-iso.vm"
 $HEADLESS = 'false'
 
-foreach ($DISTRO_PATH in (cat .\distros.build | grep -v '#')) {
+packer init -upgrade ./packer_templates
+
+foreach ($DISTRO_PATH in (cat ./distros.build | grep -v '#')) {
     try {
         cd $CWD
 
@@ -25,23 +27,32 @@ foreach ($DISTRO_PATH in (cat .\distros.build | grep -v '#')) {
         echo "==================================="
         echo "${DISTRO} / ${DISTRO_VERSION}"
         echo "distro:      ${DISTRO}"
-        echo "version:     ${VERSION}"
         echo "arch:        ${ARCH}"
-        echo "build:       ${BUILD}"
-        echo "box version: ${VERSION}.${BUILD}"
         echo "==================================="
         echo "==================================="
 
         packer build "-only=$PROVIDER_NAME" `
-            -var box_basename=$DISTRO_VERSION `
+            -var-file=os_pkrvars/"${DISTRO_FILE}".pkrvars.hcl `
             -var headless=$HEADLESS `
-            -var build_directory=./builds `
-            packer_templates/${DISTRO_FILE}.json
+            ./packer_templates
+
+        $BOXFILE = (ls builds/${DISTRO}*${PROVIDER}.box)
+        $VERSION = echo $BOXFILE | cut -d - -f 2
+        echo $BOXFILE
+        echo "==================================="
+        echo "==================================="
+        echo "version:     ${VERSION}"
+        echo "build:       ${BUILD}"
+        echo "box version: ${VERSION}.${BUILD}"
+        echo "box file:    ${BOXFILE}"
+        echo "==================================="
+        echo "==================================="
+
 
         vagrant cloud publish giflw/$DISTRO "${VERSION}.${BUILD}" ${PROVIDER} `
-            ./builds/${DISTRO_VERSION}.${PROVIDER}.box `
+            ./${BOXFILE} `
             --force `
-            --checksum "$(sha512sum ./builds/${DISTRO_VERSION}.${PROVIDER}.box | awk '{print $1}')" `
+            --checksum "$(sha512sum ./${BOXFILE} | awk '{print $1}')" `
             --checksum-type sha512 `
             --version-description "${DISTRO} ${VERSION} ${ARCH} ${BUILD}" `
             --release `
