@@ -48,7 +48,6 @@ foreach ($DISTRO_PATH in (cat ./distros.build | grep -v '#')) {
         echo "==================================="
         echo "==================================="
 
-
         vagrant cloud publish giflw/$DISTRO "${VERSION}.${BUILD}" ${PROVIDER} `
             ./${BOXFILE} `
             --force `
@@ -59,6 +58,7 @@ foreach ($DISTRO_PATH in (cat ./distros.build | grep -v '#')) {
             --no-private
     }
     catch {
+        echo $Error
         exit
     }
     finally {
