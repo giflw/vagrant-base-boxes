@@ -1,18 +1,6 @@
 packer {
   required_version = ">= 1.7.0"
   required_plugins {
-    hyperv = {
-      version = ">= 1.0.0"
-      source  = "github.com/hashicorp/hyperv"
-    }
-    parallels = {
-      version = ">= 1.0.1"
-      source  = "github.com/hashicorp/parallels"
-    }
-    qemu = {
-      version = ">= 1.0.8"
-      source  = "github.com/hashicorp/qemu"
-    }
     vagrant = {
       version = ">= 1.0.2"
       source  = "github.com/hashicorp/vagrant"
@@ -20,14 +8,6 @@ packer {
     virtualbox = {
       version = ">= 0.0.1"
       source  = "github.com/hashicorp/virtualbox"
-    }
-    vmware = {
-      version = ">= 0.0.1"
-      source  = "github.com/stromweld/vmware" # TODO: switching to stromweld repo for fix to vmware tools for fusion 13 till official fix is in place https://github.com/hashicorp/packer-plugin-vmware/issues/109
-    }
-    windows-update = {
-      version = ">= 0.14.1"
-      source  = "github.com/rgl/windows-update"
     }
   }
 }
